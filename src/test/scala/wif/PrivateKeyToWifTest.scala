@@ -4,6 +4,7 @@ import org.scalatest.FunSuite
 import scodec.bits.ByteVector
 
 class PrivateKeyToWifTest extends FunSuite {
+
   test("testWif") {
 
     // https://bitcointalk.org/index.php?topic=944596.0
@@ -30,5 +31,4 @@ class PrivateKeyToWifTest extends FunSuite {
 
     assert(WIF == "5J89cr5WGdvQWeeekN5ZGzuXVsWREbAYku6MDeUgrJTjX1ZHhCX")
   }
-
 }

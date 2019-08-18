@@ -6,15 +6,16 @@ import HashHelper._
 object PrivateKeyToWif extends App {
 
   def wif(secret: ByteVector,
-          compressed: Boolean = true,
+          compressed: Boolean = false,
           testnet: Boolean = false): String = {
 
     val prefix = if (testnet) 0xef.toByte else 0x80.toByte
-    var bytes = secret.toArray.+:(prefix)
-    if (compressed) bytes = bytes.:+(0x01.toByte)
-    val check = hash256(ByteVector(bytes)).take(4)
-    val foo = bytes ++ check.toArray
-    ByteVector(foo).toBase58
+    val suffix = if (compressed) Some(0x01.toByte) else None
+    val extendedKey = secret.toArray.+:(prefix) ++ suffix
+    val finalKey = extendedKey ++ hash256(ByteVector(extendedKey))
+      .take(4)
+      .toArray
+    ByteVector(finalKey).toBase58
   }
 
   def help = {
@@ -31,17 +32,12 @@ object PrivateKeyToWif extends App {
   args.length match {
 
     case 1 =>
-      val binary = args.head
-        .replaceAll(" ", "")
-        .replaceAll("\n", "")
-        .replaceAll(",", "")
-
+      val binary = """\\s|\\n|,""".r.replaceAllIn(args.head, "")
       binary.length match {
-
         case 256 =>
           val flipsHex = BigInt(binary, 2).toString(16)
-          val privateKey = fixSize(ByteVector.fromValidHex(flipsHex))
-          val WIF = wif(privateKey, compressed = false)
+          val privateKey = ByteVector.fromValidHex(flipsHex)
+          val WIF = wif(privateKey)
           println(WIF)
         case invalidLength =>
           println(s"Invalid binary key length = $invalidLength. Must be 256")
