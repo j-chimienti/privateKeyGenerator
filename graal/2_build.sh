@@ -8,7 +8,7 @@ cd graal
 
 # this script assumes that this file was already created
 # with sbt-assembly
-JAR_FILE=wif-assembly-0.1.jar
+JAR_FILE=wif-assembly-0.1.1.jar
 DIST_PATH=../dist
 
 mkdir -p ${DIST_PATH}
