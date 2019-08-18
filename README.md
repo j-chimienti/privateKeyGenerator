@@ -18,11 +18,17 @@ convert a private key to wif
 ### Build Native App
 
 1. install graalvm
-1. run scripts in graal
+1. run scripts in graal dir
+
+```bash
 
     cd graal
-    ./1_setup.sh
+    
+    # Source file
+    . ./1_setup.sh
+    
     ./2_build.sh
+```
 
 
 ### Benchmarks
