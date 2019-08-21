@@ -3,6 +3,7 @@ package wif
 import scodec.bits.ByteVector
 import HashHelper._
 import scopt.OParser
+import scala.language.implicitConversions
 
 object PrivateKeyToWif extends App {
 
@@ -47,15 +48,16 @@ object PrivateKeyToWif extends App {
     )
   }
 
+  implicit def binaryString2ByteVector(binaryString: String): ByteVector =
+    ByteVector.fromValidHex(BigInt(binaryString, 2).toString(16))
+
   OParser.parse(parser1, args, Config()) match {
 
     case None =>
     case Some(config) =>
       """^[01]{256}$""".r.findFirstMatchIn(config.binaryString) match {
         case Some(_) =>
-          val flipsHex = BigInt(config.binaryString, 2).toString(16)
-          val privateKey = ByteVector.fromValidHex(flipsHex)
-          val WIF = wif(privateKey)
+          val WIF = wif(config.binaryString, config.compressed, config.testnet)
           println(WIF)
         case _ =>
       }

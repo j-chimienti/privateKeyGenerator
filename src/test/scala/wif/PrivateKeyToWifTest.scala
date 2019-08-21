@@ -30,6 +30,7 @@ class PrivateKeyToWifTest extends FunSuite {
     val WIF = PrivateKeyToWif.wif(pk, compressed = false)
 
     assert(WIF == "5J89cr5WGdvQWeeekN5ZGzuXVsWREbAYku6MDeUgrJTjX1ZHhCX")
+    // todo: test compressed and testnet flags
   }
 
   // tests from programmingbitcoin
