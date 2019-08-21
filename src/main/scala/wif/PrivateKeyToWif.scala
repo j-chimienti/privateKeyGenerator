@@ -2,6 +2,12 @@ package wif
 
 import scodec.bits.ByteVector
 import HashHelper._
+import scopt.OParser
+
+case class Config(binaryString: String = "",
+                  compressed: Boolean = false,
+                  verbose: Boolean = false,
+                  testnet: Boolean = false)
 
 object PrivateKeyToWif extends App {
 
@@ -18,33 +24,46 @@ object PrivateKeyToWif extends App {
     ByteVector(finalKey).toBase58
   }
 
-  def help = {
-
-    val helpStr =
-      """
-        | Usage: wif 0010100010001111001110011011101111111101001101101101101001011010000100101101000101100010110010110001100010010111110010010000001000101000100010110011100110111011001101101101101001011010000100101101000101100010110010110001100010010111110010010000001000111101
-      """.stripMargin
-
-    println(helpStr)
+  val builder = OParser.builder[Config]
+  val parser1 = {
+    import builder._
+    OParser.sequence(
+      programName("wif"),
+      head("wif", "0.1.2"),
+      opt[Unit]('t', "testnet")
+        .action((_, c) => c.copy(testnet = true))
+        .text("use testnet"),
+      opt[Unit]('c', "compressed")
+        .action((_, c) => c.copy(compressed = true))
+        .text("compress WIF"),
+      arg[String]("<binaryString>...")
+        .unbounded()
+        .action((x, c) => c.copy(binaryString = x))
+        .required()
+        .text("256 bit binary string 001010...")
+        .validate(x => {
+          val digits = """\\D+""".r.replaceAllIn(x, "")
+          """^[01]{256}$""".r.findFirstMatchIn(digits) match {
+            case Some(_) => success
+            case None    => failure("non binary string")
+          }
+        })
+        .text("256 bit binary string")
+    )
   }
 
-  // todo: handle args better. Allow flags and support compression and testnet
-  args.length match {
+  OParser.parse(parser1, args, Config()) match {
 
-    case 1 =>
-      val binary = """\\s|\\n|,""".r.replaceAllIn(args.head, "")
-      binary.length match {
-        case 256 =>
-          val flipsHex = BigInt(binary, 2).toString(16)
+    case None =>
+    case Some(config) =>
+      """^[01]{256}$""".r.findFirstMatchIn(config.binaryString) match {
+        case Some(_) =>
+          val flipsHex = BigInt(config.binaryString, 2).toString(16)
           val privateKey = ByteVector.fromValidHex(flipsHex)
           val WIF = wif(privateKey)
           println(WIF)
-        case invalidLength =>
-          println(s"Invalid binary key length = $invalidLength. Must be 256")
-          help
-
+        case _ =>
       }
-    case _ => help
   }
 
 }

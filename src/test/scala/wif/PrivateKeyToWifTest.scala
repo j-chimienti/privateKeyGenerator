@@ -31,4 +31,48 @@ class PrivateKeyToWifTest extends FunSuite {
 
     assert(WIF == "5J89cr5WGdvQWeeekN5ZGzuXVsWREbAYku6MDeUgrJTjX1ZHhCX")
   }
+
+  // tests from programmingbitcoin
+  test("wifs") {
+
+    val list = List(
+      (
+        BigInt(
+          "115792089237316194620101962879192770082288938495059262778356087116516711989248"
+        ), // ffffffffffffff80000000000000000000000000000000000000000000000000
+        "L5oLkpV3aqBJ4BgssVAsax1iRa77G5CVYnv9adQ6Z87te7TyUdSC",
+        (true, false)
+      ),
+      (
+        BigInt(
+          "115792089237316192209694896490707356769345799983315358995051596442327459037184"
+        ), // fffffffffffffe00000000000000000000000000000000000000000000000000",
+        "93XfLeifX7Jx7n7ELGMAf1SUR6f9kgQs8Xke8WStMwUtrDucMzn",
+        (false, true)
+      ),
+      (
+        BigInt(
+          "0dba685b4511dbd3d368e5c4358a1277de9486447af7b3604a69b8d9d8b7889d",
+          16
+        ),
+        "5HvLFPDVgFZRK9cd4C5jcWki5Skz6fmKqi1GQJf5ZoMofid2Dty",
+        (false, false)
+      ),
+      (
+        BigInt(
+          "1cca23de92fd1862fb5b76e5f4f50eb082165e5191e116c18ed1a6b24be6a53f",
+          16
+        ),
+        "cNYfWuhDpbNM1JWc3c6JTrtrFVxU4AGhUKgw5f93NP2QaBqmxKkg",
+        (true, true)
+      )
+    )
+
+    for ((num, expected, (compressed, testnet)) <- list) {
+
+      val pk = ByteVector.fromValidHex(num.toString(16))
+      assert(PrivateKeyToWif.wif(pk, compressed, testnet) == expected)
+
+    }
+  }
 }
