@@ -26,7 +26,7 @@ class PrivateKeyToWifTest extends FunSuite {
         .toLowerCase()
 
     assert(hexx == i)
-    val pk = ByteVector.fromValidHex(i)
+    val pk = ByteVector32.fromValidHex(i)
     val WIF = PrivateKeyToWif.wif(pk, compressed = false)
 
     assert(WIF == "5J89cr5WGdvQWeeekN5ZGzuXVsWREbAYku6MDeUgrJTjX1ZHhCX")
@@ -71,7 +71,7 @@ class PrivateKeyToWifTest extends FunSuite {
 
     for ((num, expected, (compressed, testnet)) <- list) {
 
-      val pk = ByteVector.fromValidHex(num.toString(16))
+      val pk = ByteVector32.fromValidHex(num.toString(16))
       assert(PrivateKeyToWif.wif(pk, compressed, testnet) == expected)
 
     }

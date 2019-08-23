@@ -1,13 +1,18 @@
 package wif
 
+import java.io.{BufferedWriter, FileWriter}
+
 import scodec.bits.ByteVector
-import HashHelper._
 import scopt.OParser
-import scala.language.implicitConversions
+import wif.Config._
+import wif.HashHelper._
+import wif.RegexHelper._
+
+import scala.io.Source
 
 object PrivateKeyToWif extends App {
 
-  def wif(secret: ByteVector,
+  def wif(secret: ByteVector32,
           compressed: Boolean = false,
           testnet: Boolean = false): String = {
 
@@ -20,46 +25,35 @@ object PrivateKeyToWif extends App {
     ByteVector(finalKey).toBase58
   }
 
-  val builder = OParser.builder[Config]
-  val parser1 = {
-    import builder._
-    OParser.sequence(
-      programName("wif"),
-      head("wif", "0.1.2"),
-      opt[Unit]('t', "testnet")
-        .action((_, c) => c.copy(testnet = true))
-        .text("use testnet"),
-      opt[Unit]('c', "compressed")
-        .action((_, c) => c.copy(compressed = true))
-        .text("compress WIF"),
-      arg[String]("<binaryString>...")
-        .unbounded()
-        .action((x, c) => c.copy(binaryString = x))
-        .required()
-        .text("256 bit binary string 001010...")
-        .validate(x => {
-          val digits = """\\D+""".r.replaceAllIn(x, "")
-          """^[01]{256}$""".r.findFirstMatchIn(digits) match {
-            case Some(_) => success
-            case None    => failure("non binary string")
-          }
-        })
-        .text("256 bit binary string")
-    )
-  }
-
-  implicit def binaryString2ByteVector(binaryString: String): ByteVector =
-    ByteVector.fromValidHex(BigInt(binaryString, 2).toString(16))
-
-  OParser.parse(parser1, args, Config()) match {
-
-    case None =>
+  OParser.parse(parser, args, Config()) match {
+    case None => // error parsing, help will display
     case Some(config) =>
-      """^[01]{256}$""".r.findFirstMatchIn(config.binaryString) match {
-        case Some(_) =>
-          val WIF = wif(config.binaryString, config.compressed, config.testnet)
-          println(WIF)
-        case _ =>
+      try {
+        val binary: String =
+          if (config.file.toString == ".")
+            validateBinaryOpt(config.binary)
+              .getOrElse(
+                throw new RuntimeException(
+                  s"Invalid binary = ${config.binary}"))
+          else {
+            val source = Source.fromFile(config.file)
+            val binRaw = source.mkString("")
+            source.close()
+            validateBinaryOpt(binRaw).getOrElse(
+              throw new RuntimeException(s"Invalid binary = $binRaw"))
+          }
+        val WIF = wif(binary, config.compress, config.testnet)
+        if (config.out.toString == ".")
+          println(s"WIF = $WIF")
+        else {
+          val bufferedWriter = new BufferedWriter(new FileWriter(config.out))
+          bufferedWriter.write(WIF)
+          bufferedWriter.close()
+        }
+      } catch {
+        case e: RuntimeException =>
+          System.err.println(e.getMessage)
+          System.err.println(OParser.usage(parser))
       }
   }
 
