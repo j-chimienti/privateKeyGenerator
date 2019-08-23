@@ -4,6 +4,8 @@ import org.spongycastle.crypto.Digest
 import org.spongycastle.crypto.digests.SHA256Digest
 import scodec.bits.ByteVector
 
+import scala.language.implicitConversions
+
 object HashHelper {
 
   def hash(digest: Digest)(input: ByteVector): ByteVector = {
@@ -18,5 +20,8 @@ object HashHelper {
 
   def hash256(input: ByteVector): ByteVector32 =
     sha256(sha256(input))
+
+  implicit def binary2ByteVector32(bin: String): ByteVector32 =
+    ByteVector32.fromValidHex(BigInt(bin, 2).toString(16))
 
 }
