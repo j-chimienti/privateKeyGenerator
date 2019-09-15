@@ -21,7 +21,7 @@ object HashHelper {
   def hash256(input: ByteVector): ByteVector32 =
     sha256(sha256(input))
 
-  implicit def binary2ByteVector32(bin: String): ByteVector32 =
+  def binary2ByteVector32(bin: String): ByteVector32 =
     ByteVector32.fromValidHex(BigInt(bin, 2).toString(16))
 
 }

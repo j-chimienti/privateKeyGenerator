@@ -42,7 +42,8 @@ object PrivateKeyToWif extends App {
             validateBinaryOpt(binRaw).getOrElse(
               throw new RuntimeException(s"Invalid binary = $binRaw"))
           }
-        val WIF = wif(binary, config.compress, config.testnet)
+        val WIF =
+          wif(binary2ByteVector32(binary), config.compress, config.testnet)
         if (config.out.toString == ".")
           println(s"WIF = $WIF")
         else {
