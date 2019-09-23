@@ -1,7 +1,7 @@
 # WIF (wallet import format)
 
 
-convert a private key to wif
+convert a 256 bit binary string to bitcoin WIF
 
 [DOWNLOAD](https://github.com/j-chimienti/wif/releases/tag/v0.1.3)
 
