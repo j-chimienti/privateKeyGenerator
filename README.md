@@ -7,6 +7,8 @@ convert a private key to wif
 
 ### GUI
 
+![](https://github.com/j-chimienti/wif/blob/master/GUI.png)
+
 ### CLI
 
 ```
