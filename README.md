@@ -4,13 +4,11 @@ convert a 256 bit binary number to bitcoin WIF
 
 ### Download
 
-**Native App**
+[**CLI Native App**](https://github.com/j-chimienti/wif/releases/download/0.1.4/wif)
 
-fixme: add location
+[**CLI jar**](https://github.com/j-chimienti/wif/releases/download/0.1.4/cli-assembly-0.1.0-SNAPSHOT.jar)
 
-**GUI**
-
-fixme: add location
+[**GUI pkg**](https://github.com/j-chimienti/wif/releases/download/0.1.4/gui-0.1.0-SNAPSHOT.pkg)
 
 ### Run
 
@@ -21,7 +19,7 @@ fixme: add location
 
 **GUI**
     
-![](gui.png)
+![](GUI.png)
 
 
 ### Development
