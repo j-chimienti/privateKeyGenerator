@@ -1,6 +1,7 @@
 package wif
 
 import scodec.bits._
+
 import scala.language.implicitConversions
 
 /**

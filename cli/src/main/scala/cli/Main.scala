@@ -1,29 +1,16 @@
-package wif
+package cli
 
 import java.io.{BufferedWriter, FileWriter}
 
-import scodec.bits.ByteVector
+import cli.Config._
 import scopt.OParser
-import wif.Config._
-import wif.HashHelper._
-import wif.RegexHelper._
+import wif.HashHelper.binary2ByteVector32
+import wif.PrivateKeyToWif
+import wif.RegexHelper.validateBinaryOpt
 
 import scala.io.Source
 
-object PrivateKeyToWif extends App {
-
-  def wif(secret: ByteVector32,
-          compressed: Boolean = false,
-          testnet: Boolean = false): String = {
-
-    val prefix = if (testnet) 0xef.toByte else 0x80.toByte
-    val suffix = if (compressed) Some(0x01.toByte) else None
-    val extendedKey = secret.toArray.+:(prefix) ++ suffix
-    val finalKey = extendedKey ++ hash256(ByteVector(extendedKey))
-      .take(4)
-      .toArray
-    ByteVector(finalKey).toBase58
-  }
+object Main extends App {
 
   OParser.parse(parser, args, Config()) match {
     case None => // error parsing, help will display
@@ -43,7 +30,9 @@ object PrivateKeyToWif extends App {
               throw new RuntimeException(s"Invalid binary = $binRaw"))
           }
         val WIF =
-          wif(binary2ByteVector32(binary), config.compress, config.testnet)
+          PrivateKeyToWif.wif(binary2ByteVector32(binary),
+                              config.compress,
+                              config.testnet)
         if (config.out.toString == ".")
           println(s"WIF = $WIF")
         else {

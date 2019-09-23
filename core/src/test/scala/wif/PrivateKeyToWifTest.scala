@@ -1,7 +1,6 @@
 package wif
 
 import org.scalatest.FunSuite
-import scodec.bits.ByteVector
 
 class PrivateKeyToWifTest extends FunSuite {
 

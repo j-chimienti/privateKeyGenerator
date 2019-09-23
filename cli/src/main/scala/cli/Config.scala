@@ -1,4 +1,4 @@
-package wif
+package cli
 
 import java.io.File
 
