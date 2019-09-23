@@ -5,6 +5,23 @@ convert a private key to wif
 
 [DOWNLOAD](https://github.com/j-chimienti/wif/releases/tag/v0.1.3)
 
+### GUI
+
+### CLI
+
+```
+wif 0.1.3
+Usage: wif [options] [<binary>...]
+
+  --help
+  --version
+  -c, --compress     compress WIF
+  -t, --testnet      testnet WIF
+  -f, --file <file>  read binary from file
+  -o, --out <file>   write WIF to file
+  <binary>...        256 bit binary string 001010...
+  ```
+
 ### Run
 
 **native app**
