@@ -1,14 +1,18 @@
-# WIF (wallet import format)
+# Bitcoin Private Key Generator
 
-convert a 256 bit binary number to bitcoin WIF
+Create secure private keys
+
+**[How to Generate a secure binary key](resources/SECURE_BINARY_GEN.md)**
+
 
 ### Download
 
-[**CLI Native App**](https://github.com/j-chimienti/wif/releases/download/0.1.4/wif)
+[**CLI**](https://github.com/j-chimienti/wif/releases/download/0.1.4/wif)
 
 [**CLI jar**](https://github.com/j-chimienti/wif/releases/download/0.1.4/cli-assembly-0.1.0-SNAPSHOT.jar)
 
 [**GUI pkg**](https://github.com/j-chimienti/wif/releases/download/0.1.4/gui-0.1.0-SNAPSHOT.pkg)
+
 
 ### Run
 
@@ -19,7 +23,7 @@ convert a 256 bit binary number to bitcoin WIF
 
 **GUI**
     
-![](GUI.png)
+![](resources/GUI.png)
 
 
 ### Development
@@ -43,13 +47,22 @@ sbt project <project>
 
 **jar**
 
-```
-# select cli project
-sbt project cli
-# build jar file
-sbt assembly
-java -jar dist/wif-assembly-0.1.1.jar
-```
+  ```
+  # select cli project
+  sbt project cli
+  # build jar file
+  sbt assembly
+  java -jar dist/wif-assembly-0.1.1.jar
+  ```
+
+**Docker**
+
+  ```bash
+  ./buildDocker.sh
+  docker build -t wif 
+  docker run -it wif 
+  ```
+  
 
 
 ### Build
@@ -61,7 +74,7 @@ The native application can run on any machine and is fastest way to run.
 This is the preferred way to run and can be easily copied to a machine
 
   1. install [graalvm](https://www.graalvm.org)
-  1. Edit variables in 1_setup.sh
+  1. Edit variables in ![](graal/1_setup.sh)
   1. `./buildNative.sh`
 
 
@@ -73,7 +86,11 @@ This is the preferred way to run and can be easily copied to a machine
 
   `./buildGUI.sh`
   
-note: ./buildALL.sh builds all files
+note: `./buildAll.sh` builds all files
+
+**Docker**
+
+  `./buildDocker.sh`
 
 
 ### Benchmarks
@@ -89,7 +106,7 @@ note: ./buildALL.sh builds all files
 
 *jar*
 
-    time java -jar dist/wif-assembly-0.1.1.jar 0010100010001111001110011011101111111101001101101101101001011010000100101101000101100010110010110001100010010111110010010000001000101000100010110011100110111011001101101101101001011010000100101101000101100010110010110001100010010111110010010000001000111101
+    time java -jar wif-assembly-0.1.1.jar 0010100010001111001110011011101111111101001101101101101001011010000100101101000101100010110010110001100010010111110010010000001000101000100010110011100110111011001101101101101001011010000100101101000101100010110010110001100010010111110010010000001000111101
     
     real    0m0.637s
     user    0m0.823s

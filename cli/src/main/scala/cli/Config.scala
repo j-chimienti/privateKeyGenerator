@@ -7,8 +7,9 @@ import wif.RegexHelper.{nonDigitsRegex, validateBinaryOpt}
 
 case class Config(binary: String = "",
                   compress: Boolean = false,
-                  verbose: Boolean = false,
                   testnet: Boolean = false,
+                  address: Boolean = false,
+                  natoFormat: Boolean = false,
                   file: File = new File("."),
                   out: File = new File("."))
 
@@ -28,6 +29,12 @@ object Config {
       opt[Unit]('t', "testnet")
         .action((_, c) => c.copy(testnet = true))
         .text("testnet WIF"),
+      opt[Unit]('a', "address")
+        .valueName("Output address")
+        .action((_, c) => c.copy(address = true)),
+      opt[Unit]('n', "NATO format")
+        .text("output NATO format for human readable")
+        .action((_, c) => c.copy(natoFormat = true)),
       opt[File]('f', "file")
         .valueName("<file>")
         .text("read binary from file")
@@ -36,7 +43,7 @@ object Config {
         .valueName("<file>")
         .action((x, c) => c.copy(out = x))
         .text("write WIF to file"),
-      arg[String]("<binary>...")
+      arg[String]("binary")
         .optional()
         .action((x, c) => c.copy(binary = nonDigitsRegex.replaceAllIn(x, "")))
         .text("256 bit binary string 001010...")
