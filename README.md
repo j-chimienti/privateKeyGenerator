@@ -7,11 +7,11 @@ Create secure private keys
 
 ### Download
 
-[**CLI**](https://github.com/j-chimienti/wif/releases/download/0.1.4/wif)
+[**CLI**](https://github.com/j-chimienti/privateKeyGenerator/releases/download/0.1.0/privateKeyGen)
 
-[**CLI jar**](https://github.com/j-chimienti/wif/releases/download/0.1.4/cli-assembly-0.1.0-SNAPSHOT.jar)
+[**CLI jar**](https://github.com/j-chimienti/privateKeyGenerator/releases/download/0.1.0/privateKeyGen-assembly-0.1.1.jar)
 
-[**GUI pkg**](https://github.com/j-chimienti/wif/releases/download/0.1.4/gui-0.1.0-SNAPSHOT.pkg)
+[**GUI dmg**](https://github.com/j-chimienti/privateKeyGenerator/releases/download/0.1.0/privateKeyGen-0.1.1.dmg)
 
 
 ### Run
