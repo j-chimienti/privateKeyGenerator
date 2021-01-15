@@ -10,7 +10,7 @@ lazy val securePrivateKeyGenerator = project.in(file("."))
 lazy val commonDependencies = Seq(
   "org.scodec" % "scodec-bits_2.12" % "1.1.12",
   "com.madgag.spongycastle" % "core" % "1.58.0.0",
-  "org.scalactic" %% "scalactic" % "3.0.8",
+  "org.scalactic" %% "scalactic" % "3.0.9",
   "org.scalatest" %% "scalatest" % "3.0.8" % "test",
   "fr.acinq" % "bitcoin-lib_2.12" % "0.9.17"
 )
