@@ -65,7 +65,7 @@ lazy val gui = project
     // Fork a new JVM for 'run' and 'test:run', to avoid JavaFX double initialization problems
     fork := true,
     jdkPackagerType := "installer",
-    libraryDependencies ++= Seq("org.scalafx" %% "scalafx" % "8.0.192-R14"
+    libraryDependencies ++= Seq("org.scalafx" %% "scalafx" % "15.0.1-R21"
   ))
   .enablePlugins(JavaAppPackaging)
   .enablePlugins(JDKPackagerPlugin)
