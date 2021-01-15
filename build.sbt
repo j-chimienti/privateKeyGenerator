@@ -52,7 +52,7 @@ lazy val cli = project
         "--no-server",
         "-H:+ReportExceptionStackTraces"
       ),
-      libraryDependencies ++= Seq("com.github.scopt" %% "scopt" % "4.0.0-RC2"))
+      libraryDependencies ++= Seq("com.github.scopt" %% "scopt" % "4.0.0"))
   .enablePlugins(GraalVMNativeImagePlugin)
   .enablePlugins(DockerPlugin)
   .enablePlugins(JavaAppPackaging)
